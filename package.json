@@ -1,0 +1,27 @@
+{
+  "name": "webchatapp",
+  "version": "1.0.0",
+  "description": "It is a chatapp software",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ansh2698/Webchatapp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ansh2698/Webchatapp/issues"
+  },
+  "homepage": "https://github.com/Ansh2698/Webchatapp#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dependable": "^1.1.0",
+    "ejs": "^2.6.1",
+    "express": "^4.17.0",
+    "express-promise-router": "^3.0.3",
+    "lodash": "^4.17.11"
+  }
+}
