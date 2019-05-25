@@ -3,7 +3,8 @@ var path=require("path");
 var container=dependable.container();
 
 var MyModule=[
-    ["_","lodash"]
+    ["_","lodash"],
+    ["async","async"]
 ];
 MyModule.forEach(function(val){
     container.register(val[0],function(){
