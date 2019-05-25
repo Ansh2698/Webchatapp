@@ -1,6 +1,7 @@
 var express=require("express");
 var bodyParser=require("body-parser");
 var ejs=require("ejs");
+var http=require("http");
 var container=require("./container");
 
 container.resolve(function(users){
@@ -12,9 +13,9 @@ container.resolve(function(users){
             console.log("Server is running on port 8000");
         })
         ConfigureExpress(app);
-        var router=require("express-promise-router")();
+        var router = require("express-promise-router")();
         users.SetRouting(router);
-        app.set(router);
+        app.use(router);
     }
 
     function ConfigureExpress(app){

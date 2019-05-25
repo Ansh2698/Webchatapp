@@ -1,10 +1,11 @@
-module.exports=function(_ , async){
+"use strict";
+module.exports = function (_) {
     return {
-        SetRouting:function(router){
-            router.get("/",this.indexPage);
+        SetRouting: function (router) {
+            router.get("/", this.indexPage);
         },
-        indexPage:function(req,res){
-            res.render("index",{test:"This is a test page"});
+        indexPage: function (req, res) {
+            return res.render("index", { test:"This is test message" });
         }
     }
 }
