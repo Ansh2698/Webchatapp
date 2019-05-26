@@ -13,6 +13,7 @@ var passport=require("passport");
 
 container.resolve(function(users){
     mongoose.connect('mongodb://localhost/Webchatapp',{ useNewUrlParser: true });
+    mongoose.set('useCreateIndex', true);
     mongoose.Promise = global.Promise;
     var app=SetupExpress();
     function SetupExpress(){
@@ -28,6 +29,9 @@ container.resolve(function(users){
     }
 
     function ConfigureExpress(app){
+        require("./passport/passport-local");
+
+
         app.use(express.static("public"));
         app.use(cookieParser());
         app.set("view engine","ejs");
@@ -40,6 +44,7 @@ container.resolve(function(users){
             saveUninitialized: true,
             store:new MongoStore({mongooseConnection:mongoose.connection})
           }))
+        app.use(flash());
         app.use(passport.initialize());
         app.use(passport.session());
     }

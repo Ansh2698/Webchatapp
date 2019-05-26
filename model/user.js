@@ -1,12 +1,12 @@
 var mongoose=require("mongoose");
-
-var userSchema=mongoose.schema({
-    fullname:{type:string,unique:true},
-    username:{type:string,unique:true},
-    email:{type:string,unique:true},
-    password:{type:string,unique:true},
-    UserImage:{type:string,default:""},
-    facebook:{type:string,deafult:""},
+var bcrypt=require("bcrypt-nodejs");
+var userSchema=mongoose.Schema({
+    fullname:{type:String,unique:true,default:""},
+    username:{type:String,unique:true},
+    email:{type:String,unique:true},
+    password:{type:String,unique:true,default:""},
+    UserImage:{type:String,default:""},
+    facebook:{type:String,default:""},
     fbToken:Array
 });
 userSchema.methods.encryptPassword=function(password){
