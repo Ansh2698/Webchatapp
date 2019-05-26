@@ -4,8 +4,9 @@ var container=dependable.container();
 
 var MyModule=[
     ["_","lodash"],
-    ["async","async"]
-    ["User","./model/user"]
+    ["async","async"],
+    ["User","./model/user"],
+    ["passport","passport"],
 ];
 MyModule.forEach(function(val){
     container.register(val[0],function(){
