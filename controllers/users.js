@@ -1,17 +1,18 @@
 "use strict";
-module.exports = function (_ , passport) {
+module.exports = function (_ , passport ,User) {
     return {
         SetRouting: function (router) {
             router.get("/", this.indexPage);
             router.get("/signup",this.getSignup);
             router.get("/home",this.getHomePage);
-            router.post("/signup",this.postSignup);
+            router.post("/signup",User.SignUpvalidation,this.postSignup);
         },
         indexPage: function (req, res) {
             return res.render("index", { test:"This is test message" });
         },
         getSignup:function(req,res){
-            return res.render("signup",{signup:"this is a signup page"});
+            var errors=req.flash("error");
+            return res.render("signup",{message:errors,hasErrors:errors.length>0});
         },
         postSignup:passport.authenticate('local.signup', { 
                 successRedirect: '/home',

@@ -71,6 +71,14 @@
                     Register
                 </h1>
 
+                <%if(hasErrors){%>
+                    <div class="alert alert-danger text-center">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <%message.forEach(function(error){%>
+                            <%=error%><br>
+                        <%})%>
+                    </div>
+                <%}%>
                 <div class="inset">
                     <p>
                         <label for="username">USERNAME</label>
