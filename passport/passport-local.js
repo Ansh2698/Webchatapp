@@ -22,7 +22,7 @@ passport.use("local.signup",new LocalStrategy({
     User.findOne({ "email": email }, function(err, user) {
         if (err) { return done(err); }
         if (user) {
-          return done(null, false,req.flash("error","Username already exist"));
+          return done(null, false,req.flash("error","Email already exist"));
         }
           var newUser=new User();
           newUser.username=req.body.username;
@@ -34,5 +34,24 @@ passport.use("local.signup",new LocalStrategy({
           });
     });
   }
+));
+
+
+
+
+passport.use("local.login",new LocalStrategy({
+  usernameField: 'email',
+  passwordField: 'password',
+  passReqToCallback:true
+},
+function(req,email, password, done) {
+  User.findOne({ "email": email }, function(err, user) {
+      if (err) { return done(err); }
+      if (!user || !user.validUserPassword(password)) {
+        return done(null, false,req.flash("error","Invalid Email/Password"));
+      }
+      return done(null,user);
+  });
+}
 ));
   
