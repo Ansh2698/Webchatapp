@@ -6,6 +6,7 @@ var MyModule=[
     ["_","lodash"],
     ["async","async"],
     ["passport","passport"],
+    ["formidable","formidable"]
 ];
 MyModule.forEach(function(val){
     container.register(val[0],function(){

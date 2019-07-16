@@ -7,6 +7,8 @@ module.exports = function (_ , passport ,User) {
             router.get("/home",this.getHomePage);
             router.post("/",User.Loginvalidation,this.postLogin);
             router.post("/signup",User.SignUpvalidation,this.postSignup);
+            router.get("/auth/facebook",this.getFacebook);
+            router.get("/auth/facebook/callback",this.Facebook);
         },
         indexPage: function (req, res) {
             var errors=req.flash("error");
@@ -28,6 +30,14 @@ module.exports = function (_ , passport ,User) {
         }),
         getHomePage:function(req,res){
             res.render("home",{home:"This is a home page"});
-        }
+        },
+        getFacebook:passport.authenticate("facebook",{
+            scope:"email"
+        }),
+        Facebook:passport.authenticate('facebook', { 
+        successRedirect: '/home',
+        failureRedirect: '/signup',
+        failureFlash:true 
+        }),
     }
 }
