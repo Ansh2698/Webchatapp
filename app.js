@@ -10,8 +10,9 @@ var session=require("express-session");
 var MongoStore=require("connect-mongo")(session);
 var mongoose=require("mongoose");
 var passport=require("passport");
-
-container.resolve(function(users,admin){
+var socketIO=require("socket.io");
+var {User}=require("./helpers/Userclass");
+container.resolve(function(users,admin,home,_,group){
     mongoose.connect('mongodb://localhost/Webchatapp',{ useNewUrlParser: true });
     mongoose.set('useCreateIndex', true);
     mongoose.Promise = global.Promise;
@@ -19,13 +20,18 @@ container.resolve(function(users,admin){
     function SetupExpress(){
         var app=express();
         var server=http.createServer(app);
+        var io=socketIO(server);
         server.listen(3000,function(){
             console.log("Server is running on port 3000");
         })
         ConfigureExpress(app);
+        require('./socket/groupchat')(io,User);
+        require("./socket/friendRequest")(io);
         var router = require("express-promise-router")();
         users.SetRouting(router);
         admin.SetRouting(router);
+        home.SetRouting(router);
+        group.SetRouting(router);
         app.use(router);
     }
 
@@ -47,5 +53,6 @@ container.resolve(function(users,admin){
         app.use(flash());
         app.use(passport.initialize());
         app.use(passport.session());
+        app.locals._=_;
     }
 })

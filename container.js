@@ -8,6 +8,7 @@ var MyModule=[
     ["passport","passport"],
     ["formidable","formidable"],
     ["Club","./model/club"],
+    ["Users","./model/user"],
     ["aws","./helpers/awsupload"]
 ];
 MyModule.forEach(function(val){

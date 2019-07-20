@@ -4,7 +4,6 @@ module.exports = function (_ , passport ,User) {
         SetRouting: function (router) {
             router.get("/", this.indexPage);
             router.get("/signup",this.getSignup);
-            router.get("/home",this.getHomePage);
             router.post("/",User.Loginvalidation,this.postLogin);
             router.post("/signup",User.SignUpvalidation,this.postSignup);
             router.get("/auth/facebook",this.getFacebook);
@@ -28,9 +27,6 @@ module.exports = function (_ , passport ,User) {
                 failureRedirect: '/signup',
                 failureFlash: true 
         }),
-        getHomePage:function(req,res){
-            res.render("home",{home:"This is a home page"});
-        },
         getFacebook:passport.authenticate("facebook",{
             scope:"email"
         }),

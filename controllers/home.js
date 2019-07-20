@@ -1,10 +1,29 @@
-module.exports=function(){
+module.exports=function(async,Club){
     return {
         SetRouting:function(router){
             router.get("/home",this.getHomePage);
         },
         getHomePage:function(req,res){
-            res.render("home",{home:"This is a home page"});
+            async.parallel([
+                function(callback){
+                    Club.find({},function(err,result){
+                        callback(err,result);
+                    })
+                },
+                function(callback){
+                    Club.aggregate([{
+                        $group:{
+                            _id:"$country"
+                        }
+                    }],function(err,result){
+                        callback(err,result);
+                    })
+                }
+            ],function(err,results){
+                var res1=results[0];
+                var res2=results[1];
+                res.render("home",{data:res1,country:res2,user:req.user});
+            })
         },
     }
 }

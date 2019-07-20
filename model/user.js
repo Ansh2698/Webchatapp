@@ -7,7 +7,19 @@ var userSchema=mongoose.Schema({
     password:{type:String,unique:true,default:""},
     UserImage:{type:String,default:""},
     facebook:{type:String,default:""},
-    fbToken:Array
+    fbToken:Array,
+    sentRequest:[{
+        username:{type:String,default:""}
+    }],
+    request:[{
+        userId:{type:mongoose.Schema.Types.ObjectId,ref:"User"},
+        username:{type:String,default:""}
+    }],
+    friendList:[{
+        friendId:{type:mongoose.Schema.Types.ObjectId,ref:"User"},
+        friendName:{type:String,default:""}
+    }],
+    totalRequest:{type:Number,default:0}
 });
 userSchema.methods.encryptPassword=function(password){
     return bcrypt.hashSync(password,bcrypt.genSaltSync(10),null);

@@ -1,0 +1,54 @@
+module.exports=function(Users,async){
+    return {
+        SetRouting:function(router){
+            router.get("/group/:name",this.getGrouppage);
+            router.post("/group/:name",this.postgroupPage);
+        },
+        getGrouppage:function(req,res){
+            var name=req.params.name;
+            res.render("groupchat/group",{groupname:name,user:req.user});
+        },
+        postgroupPage:function(req,res){
+            async.parallel([
+                function(callback){
+                   if(req.body.receiverName){
+                       Users.update({
+                           'username':req.body.receiverName,
+                           'request.userId':{$ne:req.user._id},
+                           "friendList.friendId":{$ne:req.user._id}
+                       },
+                       {
+                           $push:{
+                               request:{
+                               userId:req.user._id,
+                               username:req.user.username
+                                }
+                            },
+                            $inc:{totalRequest:1}
+                       },function(err,count){
+                           callback(err,count);
+                       })
+                   } 
+                },
+                function(callback){
+                    if(req.body.receiverName){
+                        Users.update({
+                            'username':req.user.username,
+                            "sentRequest.username":{$ne:req.body.receiverName}
+                        },{
+                            $push:{
+                                sentRequest:{
+                                    username:req.body.receiverName
+                                }
+                            }
+                        },function(err,count){
+                            callback(err,count);
+                        })
+                    }
+                }
+            ],function(err,results){
+                res.redirect("/group/"+req.params.name);
+            })
+        }
+    }
+}
