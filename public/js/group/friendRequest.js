@@ -13,9 +13,73 @@ $(document).ready(function(){
             console.log('Joined');
         });
 });
-socket.on("newFriendRequest",function(friend){
-    console.log(friend);
+$(".accept_friend").on("click",function(){
+    var senderName =$(this).parent().children("input:nth-child(2)").val();
+    var senderId=$(this).parent().children("input:nth-child(1)").val();
+    $.ajax({
+        url:"/group/"+room,
+        type:'POST',
+        data:{
+            senderName:senderName,
+            senderId:senderId
+        },
+        success: function(){
+            $(this).parent().eq(1).remove();
+        }
+    });
+    $("#reload").load(location.href + " #reload");
+});
+$(".cancel_friend").on("click",function(){
+    var senderName =$(this).parent().children("input:nth-child(2)").val();
+    var senderId=$(this).parent().children("input:nth-child(1)").val();
+    $.ajax({
+        url:"/group/"+room,
+        type:'POST',
+        data:{
+            sender_Name:senderName,
+            sender_Id:senderId
+        },
+        success: function(){
+            $(this).parent().eq(1).remove();
+        }
+    });
+    $("#reload").load(location.href + " #reload");
 })
+socket.on("newFriendRequest",function(friend){
+    $("#reload").load(location.href + " #reload");
+    $(document).on("click",".accept_friend",function(){
+        var senderName =$(this).parent().children("input:nth-child(2)").val();
+        var senderId=$(this).parent().children("input:nth-child(1)").val();
+        $.ajax({
+            url:"/group/"+room,
+            type:'POST',
+            data:{
+                sender_Name:senderName,
+                sender_Id:senderId
+            },
+            success: function(){
+                $(this).parent().eq(1).remove();
+            }
+        });
+        $("#reload").load(location.href + " #reload");
+    });
+    $(document).on("click",".cancel_friend",function(){
+        var senderName =$(this).parent().children("input:nth-child(2)").val();
+        var senderId=$(this).parent().children("input:nth-child(1)").val();
+        $.ajax({
+            url:"/group/"+room,
+            type:'POST',
+            data:{
+                sender_Name:senderName,
+                sender_Id:senderId
+            },
+            success: function(){
+                $(this).parent().eq(1).remove();
+            }
+        });
+        $("#reload").load(location.href + " #reload");
+    });
+});
 $('#add_friend').on('submit', function(e){
     e.preventDefault();
     

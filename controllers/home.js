@@ -1,4 +1,4 @@
-module.exports=function(async,Club){
+module.exports=function(async,Club,Users){
     return {
         SetRouting:function(router){
             router.get("/home",this.getHomePage);
@@ -18,11 +18,19 @@ module.exports=function(async,Club){
                     }],function(err,result){
                         callback(err,result);
                     })
+                },
+                function(callback){
+                    Users.findOne({username:req.user.username})
+                    .populate("request.userId")
+                    .exec(function(err,result){
+                        callback(err,result)
+                    })
                 }
             ],function(err,results){
                 var res1=results[0];
                 var res2=results[1];
-                res.render("home",{data:res1,country:res2,user:req.user});
+                var res3=results[2];
+                res.render("home",{data:res1,country:res2,user:req.user,res1:res3});
             })
         },
     }

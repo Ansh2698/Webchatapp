@@ -21,12 +21,12 @@ container.resolve(function(users,admin,home,_,group){
         var app=express();
         var server=http.createServer(app);
         var io=socketIO(server);
-        server.listen(3000,function(){
-            console.log("Server is running on port 3000");
+        server.listen(8000,function(){
+            console.log("Server is running on port 8000");
         })
         ConfigureExpress(app);
         require('./socket/groupchat')(io,User);
-        require("./socket/friendRequest")(io);
+        require('./socket/friendRequest')(io);
         var router = require("express-promise-router")();
         users.SetRouting(router);
         admin.SetRouting(router);
