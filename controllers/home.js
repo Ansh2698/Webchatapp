@@ -1,7 +1,8 @@
-module.exports=function(async,Club,Users){
+module.exports=function(async,Club,Users,homeRequest){
     return {
         SetRouting:function(router){
             router.get("/home",this.getHomePage);
+            router.post("/home",homeRequest.Request);
         },
         getHomePage:function(req,res){
             async.parallel([
@@ -25,7 +26,7 @@ module.exports=function(async,Club,Users){
                     .exec(function(err,result){
                         callback(err,result)
                     })
-                }
+                },
             ],function(err,results){
                 var res1=results[0];
                 var res2=results[1];

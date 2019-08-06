@@ -1,7 +1,5 @@
 $(document).ready(function(){
     var socket = io();
-    
-    var room = $('#groupName').val();
     var sender = $('#sender').val();
     
     socket.on('connect', function(){
@@ -17,7 +15,7 @@ $(".accept_friend").on("click",function(){
     var senderName =$(this).parent().children("input:nth-child(2)").val();
     var senderId=$(this).parent().children("input:nth-child(1)").val();
     $.ajax({
-        url:"/group/"+room,
+        url:"/home",
         type:'POST',
         data:{
             senderName:senderName,
@@ -33,7 +31,7 @@ $(".cancel_friend").on("click",function(){
     var senderName =$(this).parent().children("input:nth-child(2)").val();
     var senderId=$(this).parent().children("input:nth-child(1)").val();
     $.ajax({
-        url:"/group/"+room,
+        url:"/home",
         type:'POST',
         data:{
             sender_Name:senderName,
@@ -51,11 +49,11 @@ socket.on("newFriendRequest",function(friend){
         var senderName =$(this).parent().children("input:nth-child(2)").val();
         var senderId=$(this).parent().children("input:nth-child(1)").val();
         $.ajax({
-            url:"/group/"+room,
+            url:"/home",
             type:'POST',
             data:{
-                senderName:senderName,
-                senderId:senderId
+                sender_Name:senderName,
+                sender_Id:senderId
             },
             success: function(){
                 $(this).parent().eq(1).remove();
@@ -67,7 +65,7 @@ socket.on("newFriendRequest",function(friend){
         var senderName =$(this).parent().children("input:nth-child(2)").val();
         var senderId=$(this).parent().children("input:nth-child(1)").val();
         $.ajax({
-            url:"/group/"+room,
+            url:"/home",
             type:'POST',
             data:{
                 sender_Name:senderName,
@@ -80,24 +78,21 @@ socket.on("newFriendRequest",function(friend){
         $("#reload").load(location.href + " #reload");
     });
 });
-$('#add_friend').on('submit', function(e){
+$(document).on('submit',".favorite",function(e) {
     e.preventDefault();
-    
-    var receiverName = $('#receiverName').val();
-     $.ajax({
-         url: '/group/'+room,
-         type: 'POST',
-         data: {
-             receiverName: receiverName
-         },
-         success: function(){
-            socket.emit('friendRequest', {
-                receiver: receiverName,
-                 sender: sender
-         }, function(){
-                 console.log('Request Sent');
-             })
-         }
-    })
-});
+    var club_name=$(this).find('input[name="clubName"]').val();
+    var club_country=$(this).find('input[name="clubcountry"]').val();
+    var club_Id=$(this).find('input[name="clubId"]').val();
+    $.ajax({
+        url:"/home",
+        type:'POST',
+        data:{
+            clubName:club_name,
+            clubId:club_Id
+        },
+        success: function(){
+            console.log(club_name);
+        }
+    });
+  });
 })

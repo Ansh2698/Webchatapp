@@ -71,7 +71,9 @@
                                                         Online Friends <span id="numOfFriends"></span>
                                                     </p>
                                                     <hr style="margin-top:10px" />
-                                                    
+                                                    <% _.forEach(res1.friendList,function(value){%>
+                                                        <div class="friend" hidden>@<%=value.friendName%></div>
+                                                    <%})%>
                                                     <div class="onlineFriends"></div>
 
                                                 </div>
@@ -208,6 +210,7 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/group/groupchat.js"></script>
 <script src="/js/group/friendRequest.js"></script>
+<script src="/js/global.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.js"></script>
 </body>
 

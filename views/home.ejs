@@ -13,6 +13,7 @@
    <form action="#" method="post">
        <div class="form-group ad-30" style="margin-top:8px;">
             <div class="input-group search-style">
+                <input type="hidden" id="sender" value="<%=user.username%>">
                 <input class="form-control new-search-bar"  name="country" id="search" placeholder="Enter Your Club Name" type="text">
                 <span class="input-group-btn">
                     <button class="btn input-btn" type="" id="search-form">Search</button>
@@ -23,6 +24,8 @@
 </div>
   
 <div class="col-md-12">
+    <input type="hidden" value="<%=user.username%>" id="user-name" name="user-name">
+    <input type="hidden" name="user-image" id="user-image" value="<%=user.UserImage%>">
     <div class="">
         <div class="row">
             <div class="col-md-3">
@@ -57,13 +60,13 @@
                     <div class="category-list">
                         <div class="row">
                             <% _.forEach(data,function(val){%>
-                            <form action="#" method="post" id="add-fav">
+                            <form action="/home" method="post" class="favorite">
                                 <div class="item col-md-4">
                                     <a style="text-decoration: none" href="/group/<%=val.name%>">
                                     <div class="thumbnail">
                                        <img src="https://webchatapp.s3.ap-south-1.amazonaws.com/<%=val.image%>">
                                         <div class="caption">
-                                            <h4><%= val.name%></h4>
+                                            <h4><%= val.name%>(<%=val.fans.length%>)</h4>
                                             
                                             <div class="row">
                                                 <div class="col-xs-12 col-md-6">
@@ -71,8 +74,10 @@
                                                         <%=val.country%>
                                                     </p>
                                                 </div>
-                                                
                                                 <div class="col-xs-12 col-md-6">
+                                                    <input type="hidden" name="clubName" id="clubName" value="<%=val.name%>">
+                                                    <input type="hidden" name="clubId" id="clubId" value="<%=val._id%>">
+                                                    <input type="hidden" name="clubcountry" id="clubcountry" value="<%=val.country%>">
                                                     <button class="btn add-fav">
                                                         Add To Favorite
                                                     </button>
@@ -82,8 +87,8 @@
                                     </div>
                                     </a>
                                 </div>
-                                <%})%>
                             </form>
+                            <%})%>
                         </div>
                     </div>
                     
@@ -97,5 +102,8 @@
     
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>  
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/home.js"></script>
+<script src="/js/global.js"></script>
 </body>
 </html>

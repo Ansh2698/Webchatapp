@@ -12,6 +12,7 @@ var mongoose=require("mongoose");
 var passport=require("passport");
 var socketIO=require("socket.io");
 var {User}=require("./helpers/Userclass");
+var {Global}=require("./helpers/globalroom");
 container.resolve(function(users,admin,home,_,group){
     mongoose.connect('mongodb://localhost/Webchatapp',{ useNewUrlParser: true });
     mongoose.set('useCreateIndex', true);
@@ -27,6 +28,7 @@ container.resolve(function(users,admin,home,_,group){
         ConfigureExpress(app);
         require('./socket/groupchat')(io,User);
         require('./socket/friendRequest')(io);
+        require('./socket/globalroom')(io,Global,_);
         var router = require("express-promise-router")();
         users.SetRouting(router);
         admin.SetRouting(router);
