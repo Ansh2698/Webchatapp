@@ -22,8 +22,8 @@ container.resolve(function(users,admin,home,_,group){
         var app=express();
         var server=http.createServer(app);
         var io=socketIO(server);
-        server.listen(8000,function(){
-            console.log("Server is running on port 8000");
+        server.listen(5000,function(){
+            console.log("Server is running on port 5000");
         })
         ConfigureExpress(app);
         require('./socket/groupchat')(io,User);

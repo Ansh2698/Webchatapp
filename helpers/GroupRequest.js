@@ -1,4 +1,4 @@
-module.exports=function(Users,async){
+module.exports=function(Users,async,Group){
     return {
         Request:function(req,res){
             async.parallel([

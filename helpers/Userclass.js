@@ -29,5 +29,14 @@ class User{
         });
         return NamesArray;
     }
+    Getname(id){
+        var name=this.users.filter(function(user){
+            return user.id!==id;
+        })
+        var namesarray=name.map(function(user){
+            return user.name;
+        })
+        return namesarray;
+    }
 }
 module.exports={User};

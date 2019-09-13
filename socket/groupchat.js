@@ -9,12 +9,26 @@ module.exports=function(io,User){
             callback();
         })
         socket.on("chat message",function(msg,callback){
-            io.to(msg.room).emit("new message",{
+            socket.to(msg.room).broadcast.emit("new message",{
                 text:msg.txt,
                 room:msg.room,
-                from:msg.sender
+                sender:msg.sender,
+                MessageAt:msg.messageAt
+            })
+            var name=users.Getname(socket.id);
+            io.to(socket.id).emit("new-msg",{
+                text:msg.txt,
+                room:msg.room,
+                sender:msg.sender,
+                name:name,
+                MessageAt:msg.messageAt
             })
             callback();
+        })
+        socket.on("typing",function(data){
+            socket.broadcast.emit("Type",{
+                name:data.name
+            });
         })
         socket.on("disconnect",function(){
             var user=users.RemoveUser(socket.id);

@@ -2,6 +2,7 @@ $(document).ready(function(){
     var socket=io();
     var room=$("#groupname").val();
     var sender=$("#sender").val();
+    var userImage=$("#userimage").val();
     var params={
         room:room,
         name:sender
@@ -26,23 +27,71 @@ $(document).ready(function(){
         $("#users").html(ol);
     })
     socket.on("new message",function(data){
-       var template=$("#message-template").html();
-       var message=Mustache.render(template,{
-           sender:data.from,
-           txt:data.text,
-           room:data.room
-       });
-       $("#message").append(message);
+        console.log(data.MessageAt);
+        $("#feedback").html("");
+        var messages=document.querySelector("#message");
+        var li=document.createElement("li");
+        li.className="sent";
+        li.innerHTML="<img src='https://placehold.it/300x300' alt=''/>"+
+        "<p><span class='message'>"+data.text+"</span><br><span class='messageAt'>"+data.MessageAt+"</span></p>"+
+        messages.appendChild(li);
     })
-    $("#message-form").on("submit",function(e){
-        e.preventDefault();
-        var message=$("#msg").val();
-        socket.emit("chat message",{
-            txt:message,
-            room:room,
-            sender:sender
-        },function(){
-            $("#msg").val("");
+    socket.on("new-msg",function(data){
+        var messages=document.querySelector("#message");
+        var li=document.createElement("li");
+        li.className="replies";
+        if (data.name.length>0){
+            li.innerHTML = "<img src='https://placehold.it/300x300' alt=''/>" +
+            "<p><span class='message'>"+data.text+"</span><br><span class='messageAt'>"+data.MessageAt+"<img src='https://webchatapp.s3.ap-south-1.amazonaws.com/double_black.png' alt=''></span></p>"
+        }
+        else{
+            li.innerHTML = "<img src='https://placehold.it/300x300' alt=''/>" +
+            "<p><span class='message'>"+data.text+"</span><br><span class='messageAt'>"+data.MessageAt+"<img src='https://webchatapp.s3.ap-south-1.amazonaws.com/double_black.png' alt=''></span></span></p>"
+        }
+        messages.appendChild(li);
+    })
+    socket.on("Type",function(data){
+        var name=data.name;
+        $("#feedback").html("<p><em>("+name+" is typing a message ...)</em></p>");
+    })
+    function submitForm() {
+            var msg = $("#msg").val();
+            var At=moment().format("hh:mm a");
+            $.ajax({
+                url:"/MessageList/"+room,
+                type:"POST",
+                data:{
+                    message:msg,
+                    userImage:userImage,
+                    MessageAt:At,
+                    sender:sender,
+                    group:room,
+                    isRead:"false",
+                },
+                success:function(){
+                    socket.emit("chat message", {
+                        txt: msg,
+                        room: room,
+                        sender: sender,
+                        messageAt:At
+                    }, function () {
+                        $("#msg").val("");
+                    })
+                }
+            });
+    }
+    $("#send-message").on("click",function(){
+        submitForm();
+    })
+    $('#msg').keypress(function(e) {
+        socket.emit("typing",{
+            name:sender
         })
-    })
+        var key = e.which;
+        if (key == 13) {
+        // As ASCII code for ENTER key is "13"
+        submitForm();
+        return false; // Submit form code
+        }
+        });
 })

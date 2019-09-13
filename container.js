@@ -9,6 +9,7 @@ var MyModule=[
     ["formidable","formidable"],
     ["Club","./model/club"],
     ["Users","./model/user"],
+    ["Group","./model/group"],
     ["aws","./helpers/awsupload"]
 ];
 MyModule.forEach(function(val){
